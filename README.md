@@ -1,6 +1,6 @@
 # Automating Multi-Platform Restaurant Booking Management with Apache Airflow
 
-## 📌 Project Overview
+## Project Overview
 This project automates the management of restaurant bookings across multiple platforms (**TheFork, Quandoo, OpenTable, SevenRooms**) using **Apache Airflow** to orchestrate ETL workflows. The system extracts reservation data from **API endpoints**, standardizes it, and stores it in a **PostgreSQL** database for centralized tracking. 
 A **Tableau** provides insights into booking trends, occupancy rates, and platform performance.
 
@@ -8,19 +8,19 @@ Additionally, this project includes **FindTables**, a **Django-based restaurant 
 
 ---
 
-## 🚀 Features
+## Features
 
-✔ **Automated ETL Pipeline** – Extracts, transforms, and loads booking data from multiple platforms.  
-✔ **Centralized Database** – Stores structured reservation data in **PostgreSQL/MySQL**.  
-✔ **Data Standardization** – Ensures uniformity in booking data across platforms.  
-✔ **Interactive Dashboard** – Analyzes booking trends, occupancy rates, and platform performance.  
-✔ **Django-Based Booking System** – Simulates restaurant reservations via API endpoints.  
-✔ **Webhook Simulation** – Simulates real-time booking updates from platforms.  
-✔ **Cloud-Ready Architecture** – Can be deployed on **AWS, Docker, or local environments**.  
+**Automated ETL Pipeline** – Extracts, transforms, and loads booking data from multiple platforms.  
+**Centralized Database** – Stores structured reservation data in **PostgreSQL/MySQL**.  
+**Data Standardization** – Ensures uniformity in booking data across platforms.  
+**Interactive Dashboard** – Analyzes booking trends, occupancy rates, and platform performance.  
+**Django-Based Booking System** – Simulates restaurant reservations via API endpoints.  
+**Webhook Simulation** – Simulates real-time booking updates from platforms.  
+**Cloud-Ready Architecture** – Can be deployed on **AWS, Docker, or local environments**.  
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 📂 restaurant-booking-management  
@@ -37,7 +37,7 @@ Additionally, this project includes **FindTables**, a **Django-based restaurant 
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Component           | Technology Used |
 |---------------------|----------------|
@@ -51,31 +51,31 @@ Additionally, this project includes **FindTables**, a **Django-based restaurant 
 
 ---
 
-## 📌 How It Works
+## How It Works
 
-### 1️⃣ Extract Booking Data
+### Extract Booking Data
 - Airflow DAGs extract **mock booking data** from TheFork, Quandoo, OpenTable, and SevenRooms APIs.
 - Data is fetched in different formats (JSON, CSV) and standardized.
 
-### 2️⃣ Transform & Standardize
+### Transform & Standardize
 - Python scripts clean, validate, and standardize booking data.
 - Ensures uniformity in fields like `order_id`, `customer_name`, `booking_time`, `restaurant_id`, etc.
 
-### 3️⃣ Load into Database
+### Load into Database
 - Standardized data is stored in **PostgreSQL/MySQL**.
 - Enables **efficient querying** and integration with the dashboard.
 
-### 4️⃣ Dashboard Analysis
+### Dashboard Analysis
 - Tableau/Power BI visualizes:
   - **Booking trends** across platforms
   - **Occupancy rates** per restaurant
   - **Platform performance** comparisons
 
-### 5️⃣ FindTables - Django-Based Booking System
+### FindTables - Django-Based Booking System
 - Allows users to **simulate restaurant bookings** via API.
 - Stores bookings in the central database.
 
-### 6️⃣ Webhook Simulation
+### Webhook Simulation
 - Simulates real-time booking updates from different platforms.
 - Updates database whenever a **reservation is modified or canceled**.
 
