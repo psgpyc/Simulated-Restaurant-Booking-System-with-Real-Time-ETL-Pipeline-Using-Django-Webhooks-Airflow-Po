@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>The Restaurant</title>
+  <!-- Bootstrap CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  />
+  <!-- Bootstrap Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+  />
+  <!-- Google Font (Inter) -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+  />
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+    /* Hide native date picker icon */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      display: none;
+      -webkit-appearance: none;
+    }
+    input[type="date"]::-webkit-clear-button {
+      display: none;
+    }
+
+    body {
+      margin: 0;
+      background-color: #f8faf9;
+      font-family: 'Inter', Arial, sans-serif;
+      color: #4C5564;
+    }
+    .top-banner {
+      background: linear-gradient(90deg, #e9fbf2 0%, #ffffff 100%);
+      color: #00b56e;
+      text-align: center;
+      padding: 10px 0;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    .main-box {
+      max-width: 650px;
+      margin: 25px auto;
+      background-color: #ffffff;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      margin-bottom: 20px;
+    }
+    .restaurant-title {
+      font-size: 1.6rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+    .booking-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      margin-bottom: 1.75rem;
+      background-color: #fff;
+    }
+    .booking-col {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 15px;
+      position: relative;
+    }
+    .booking-col:not(:last-child) {
+      border-right: 1px solid #eee;
+    }
+    .booking-icon {
+      font-size: 1.2rem;
+      color: #4C5564;
+    }
+    .booking-col select,
+    .booking-col input[type='date'] {
+      border: none;
+      border-radius: 0;
+      outline: none;
+      font-size: 0.95rem;
+      color: #4C5564;
+      background-color: transparent;
+      text-align: center;
+      width: auto;
+      padding: 2px 4px;
+      transition: border-color 0.2s ease;
+    }
+    .booking-col select:focus,
+    .booking-col input[type='date']:focus {
+      border-color: #ff6b6b;
+    }
+    .request-label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #666;
+      margin-bottom: 6px;
+    }
+    .form-textarea {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      border-radius: 0;
+      outline: none;
+      font-size: 0.95rem;
+      color: #4C5564;
+      transition: border-color 0.2s ease;
+      resize: none;
+      padding: 4px;
+    }
+    .form-textarea:focus {
+      border-color: #ff6b6b;
+    }
+    .form-control {
+      border: none;
+      border-bottom: 1px solid #ccc;
+      border-radius: 0;
+      box-shadow: none !important;
+      font-size: 0.95rem;
+      color: #4C5564;
+      transition: border-color 0.2s ease;
+    }
+    .form-control:focus {
+      outline: none;
+      box-shadow: none !important;
+      border-color: #ff6b6b;
+    }
+    .form-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #666;
+      margin-bottom: 4px;
+    }
+    .reserve-btn {
+      background-color: #ff6b6b;
+      color: #fff;
+      padding: 14px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      width: 100%;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+    .reserve-btn:hover {
+      background-color: #ff4c4c;
+      transform: scale(1.01);
+    }
+    .disclaimer {
+      font-size: 0.8rem;
+      color: #999;
+      text-align: center;
+      margin-top: 1.5rem;
+      line-height: 1.4;
+    }
+    .disclaimer a {
+      color: #999;
+      text-decoration: underline;
+    }
+    .text-center.mt-3 {
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <h3 class="text-center mt-3">
+    Complete Your Reservation
+  </h3>
+
+
+  <!-- Booking Details Box -->
+  <div class="main-box">
+    <div class="restaurant-title">The Restaurant</div>
+
+    <!-- Row for People / Date / Time -->
+    <div class="booking-row">
+      <!-- People -->
+      <div class="booking-col">
+        <i class="bi bi-people booking-icon"></i>
+        <select id="people">
+          <option>1</option>
+          <option selected>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+          <option>6</option>
+          <option>7</option>
+          <option>8</option>
+          <option>9</option>
+          <option>10</option>
+        </select>
+      </div>
+      <!-- Date -->
+      <div class="booking-col">
+        <i class="bi bi-calendar3 booking-icon"></i>
+        <input type="date" id="res_date" />
+      </div>
+      <!-- Time -->
+      <div class="booking-col">
+        <i class="bi bi-clock booking-icon"></i>
+        <select id="res_time"></select>
+      </div>
+    </div>
+
+   
+  <!-- User Details Box -->
+  <div class="main-box">
+    <div class="mb-3">
+      <label class="form-label">Email address *</label>
+      <input type="email" class="form-control" id="email" />
+    </div>
+    <div class="row g-2 mb-3">
+      <div class="col-6">
+        <label class="form-label">First name *</label>
+        <input type="text" class="form-control" id="first_name" />
+      </div>
+      <div class="col-6">
+        <label class="form-label">Last name *</label>
+        <input type="text" class="form-control" id="last_name" />
+      </div>
+    </div>
+    <div class="row g-2 mb-3">
+      <div class="col-3">
+        <label class="form-label">Country</label>
+        <select class="form-control" id="country_code">
+          <option>+44</option>
+          <option>+1</option>
+          <option>+91</option>
+        </select>
+      </div>
+      <div class="col-9">
+        <label class="form-label">Phone number *</label>
+        <input type="tel" class="form-control" id="phone" />
+      </div>
+    </div>
+
+    <button class="reserve-btn" id="reserveBtn">Reserve now</button>
+
+    <div class="disclaimer">
+      By making a reservation, you confirm that you have read and accepted the
+      <a href="#">terms of use</a> and the
+      <a href="#">privacy policy</a> of the website.
+    </div>
+  </div>
+
+  <script>
+    // Restrict date to today and onward
+    const today = new Date().toISOString().split('T')[0];
+    const dateField = document.getElementById('res_date');
+    dateField.min = today;
+    dateField.value = today;
+
+    function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  const csrftoken = getCookie('csrftoken');
+
+    // Populate time from 12:00 PM to 11:30 PM in 15-min increments,
+    // ensuring it starts at least 15 minutes in the future if after 12 PM.
+    function populateTimeOptions() {
+      const now = new Date();
+      let currentHours = now.getHours();
+      let currentMinutes = now.getMinutes();
+
+      const timeSelect = document.getElementById('res_time');
+      timeSelect.innerHTML = '';
+
+      // Earliest is 12:00 PM
+      let minTotalMins = 12 * 60;
+
+      // If it's already after 12 PM, skip times before now+15 mins
+      if (currentHours >= 12) {
+        const minutesRounded = currentMinutes + (15 - (currentMinutes % 15));
+        const currentTimeInMins = currentHours * 60 + minutesRounded;
+        if (currentTimeInMins > minTotalMins) {
+          minTotalMins = currentTimeInMins;
+        }
+      }
+
+      // Latest is 11:30 PM -> 23*60 + 30 = 1410
+      const maxTotalMins = 23 * 60 + 30;
+
+      for (let mins = minTotalMins; mins <= maxTotalMins; mins += 15) {
+        const h = Math.floor(mins / 60);
+        const m = mins % 60;
+        const labelH = h === 0 ? 12 : (h > 12 ? h - 12 : h);
+        const amPm = h < 12 ? 'AM' : 'PM';
+        const labelM = m.toString().padStart(2, '0');
+
+        const option = document.createElement('option');
+        option.value = `${h.toString().padStart(2, '0')}:${labelM}`;
+        option.textContent = `${labelH}:${labelM} ${amPm}`;
+        timeSelect.appendChild(option);
+      }
+    }
+    // Initialize time options on page load
+    populateTimeOptions();
+
+    // On date change, if not today => times from 12:00 PM, otherwise after now+15
+    const dateEl = document.getElementById('res_date');
+    dateEl.addEventListener('change', () => {
+      const selectedDate = new Date(dateEl.value);
+      const isToday = selectedDate.toDateString() === new Date().toDateString();
+      const timeSelect = document.getElementById('res_time');
+      timeSelect.innerHTML = '';
+
+      if (!isToday) {
+        // Start from 12:00 PM
+        let minMins = 12 * 60; // 720
+        const maxMins = 23 * 60 + 30; // 1410
+        for (let mins = minMins; mins <= maxMins; mins += 15) {
+          const hh = Math.floor(mins / 60);
+          const mm = mins % 60;
+          const labelH = hh === 0 ? 12 : (hh > 12 ? hh - 12 : hh);
+          const amPm = hh < 12 ? 'AM' : 'PM';
+          const labelM = mm.toString().padStart(2, '0');
+          const opt = document.createElement('option');
+          opt.value = `${hh.toString().padStart(2, '0')}:${labelM}`;
+          opt.textContent = `${labelH}:${labelM} ${amPm}`;
+          timeSelect.appendChild(opt);
+        }
+      } else {
+        populateTimeOptions();
+      }
+    });
+
+    // ================== AJAX POST to the Backend ==================
+    $("#reserveBtn").click(function(e) {
+      e.preventDefault(); // prevent page reload
+
+      // 1) Gather form data
+      let data = {
+        size: $("#people").val(),
+        reservation_date: $("#res_date").val(),
+        reservation_time: $("#res_time").val(),
+        email: $("#email").val(),
+        first_name: $("#first_name").val(),
+        last_name: $("#last_name").val(),
+        country_code: $("#country_code").val(),
+        phone: $("#phone").val(),
+        source: 'fork',
+        status:'confirmed', 
+      };
+
+      console.log(data)
+
+      // 2) Send AJAX request to your Django/DRF endpoint
+      $.ajax({
+        url: "http://127.0.0.1:8000/api/reservations/create",
+        method: "POST",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        headers: {
+        'X-CSRFToken': csrftoken
+        },
+        success: function(response) {
+          alert("Reservation successful!");
+          $("#email")[0].reset();
+          $("#first_name")[0].reset();
+          $("#last_name")[0].reset();
+          console.log("Server response:", response);
+        },
+        error: function(xhr, status, error) {
+          alert("Error making reservation: " + xhr.responseText);
+          console.error("Error details:", error);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

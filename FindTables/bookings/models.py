@@ -34,6 +34,7 @@ class Table(models.Model):
 class Customer(models.Model):
     name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=15)
+    email = models.EmailField(blank=True, null=True)
 
     class Meta:
         unique_together = ['name', 'phone_number']

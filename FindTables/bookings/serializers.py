@@ -35,7 +35,7 @@ class ReservationsCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reservations
-        fields = ['reservation_platform', 'restaurant', 'guest', 'size','reservation_time']
+        fields = ['reservation_platform', 'restaurant', 'guest' ,'size','reservation_time', 'status']
     
 
 
