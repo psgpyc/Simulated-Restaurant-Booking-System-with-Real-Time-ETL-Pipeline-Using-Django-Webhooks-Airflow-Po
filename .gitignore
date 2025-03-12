@@ -1,0 +1,81 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django stuff
+*.log
+db.sqlite3
+db.sqlite3-journal
+/media
+/staticfiles
+/local_settings.py
+.env
+*.env
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# macOS specific
+.DS_Store
+AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+
+# Pipenv
+Pipfile
+Pipfile.lock
+
+# VS Code
+.vscode/
+.history/
+
+# PyCharm
+.idea/
+*.iml
+
+# Coverage reports
+htmlcov/
+.coverage
+.tox/
+.nox/
+
+# Migrations (optional, remove if tracking migrations)
+**/migrations/*.py
+!**/migrations/__init__.py
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Docker
+docker-compose.override.yml
+*.dockerignore
+
+# Static / Media files
+/static/
+*.gz
+*.zip
+
+# Logs
+logs/
+*.log
+*.out
+*.err
+
+# Test coverage reports
+.coverage
+.coverage.*
+.cache/
+nosetests.xml
+coverage.xml
+*.cover
+
+# Temporary files
+tmp/
+*.swp
+*.swo

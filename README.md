@@ -2,9 +2,9 @@
 
 ## Project Overview
 This project automates the management of restaurant bookings across multiple platforms (**TheFork, Quandoo, OpenTable, SevenRooms**) using **Apache Airflow** to orchestrate ETL workflows. The system extracts reservation data from **API endpoints**, standardizes it, and stores it in a **PostgreSQL** database for centralized tracking. 
-A **Tableau** provides insights into booking trends, occupancy rates, and platform performance.
+A **Tableau Dashboard** provides insights into booking trends, occupancy rates, and platform performance.
 
-Additionally, this project includes **FindTables**, a **Django-based restaurant booking system** that simulates real-world table reservations. Users can make and manage reservations through API endpoints and a **jQuery-based frontend**.
+Additionally, this project includes **FindTables**, a **Django-based restaurant booking system** that simulates real-world table reservations. Users can make and manage reservations through API endpoints and a **frontend**.
 
 ---
 
@@ -25,11 +25,11 @@ Additionally, this project includes **FindTables**, a **Django-based restaurant 
 ```
 📂 restaurant-booking-management  
 │── 📂 airflow/                   # Apache Airflow DAGs for ETL workflows  
-│── 📂 backend/                   # Django-based FindTables booking system  
-│── 📂 database/                  # PostgreSQL/MySQL schema and scripts  
-│── 📂 dashboards/                # Tableau/Power BI dashboard files  
+│── 📂 FindTables/                   # Django-based FindTables booking system  
+│── 📂 database/                  # PostgreSQL schema and scripts  
+│── 📂 dashboards/                # Tableau dashboard files  
 │── 📂 scripts/                   # Data extraction & transformation scripts  
-│── 📂 frontend/                  # jQuery-based booking interface  
+│── 📂 frontend/                  # frontend booking interface  
 │── 📜 README.md                  # Project documentation  
 │── 📜 requirements.txt           # Python dependencies  
 │── 📜 docker-compose.yml         # Docker setup for deployment  
