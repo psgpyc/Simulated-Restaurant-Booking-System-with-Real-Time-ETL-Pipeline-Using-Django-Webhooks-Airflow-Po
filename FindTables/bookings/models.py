@@ -42,14 +42,25 @@ class Customer(models.Model):
     def __str__(self):
         return f"{self.name} - {self.phone_number}"
 
+class ReservationTags(models.Model):
+    name = models.CharField(max_length=50, unique=True)
 
+    def __str__(self):
+        return self.name
+
+class Experience(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
 
 class Reservations(models.Model):
     """Stores restaurant reservation details"""
 
-    reservation_platform = models.ForeignKey(BookingPlatform, on_delete=models.SET_NULL, null=True, blank=True, related_name='reservations')
+    source = models.ForeignKey(BookingPlatform, on_delete=models.SET_NULL, null=True, blank=True, related_name='reservations')
     restaurant = models.ForeignKey(Restaurant, on_delete=models.SET_NULL, null=True, blank=True, related_name='reservations')
     reservation_time = models.DateTimeField()
+    experience = models.ForeignKey(Experience, on_delete=models.SET_NULL, null=True, blank=True)
     guest = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
     size = models.IntegerField()
     status = models.CharField(
@@ -57,7 +68,16 @@ class Reservations(models.Model):
         choices=[('pending', 'Pending'), ('confirmed', 'Confirmed'), ('cancelled', 'Cancelled'), ('no_show', 'No Show')], 
         default='confirmed'
     )
+    payment_mode = models.CharField(
+        max_length=20, 
+        choices=[('on site', 'On Site'), ('card hold', 'Credit Card Hold'), ('pre payment', 'Pre Payment')], 
+        default='on site'
+    )
+    tags = models.ManyToManyField(ReservationTags)
+    has_tags = models.BooleanField(default=False)
+    visit_notes = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
         verbose_name_plural = 'Reservations'

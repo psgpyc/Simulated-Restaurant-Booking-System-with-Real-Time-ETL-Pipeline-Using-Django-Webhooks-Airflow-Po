@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from bookings.models import BookingPlatform, Restaurant, Table, Customer,Reservations
+from bookings.models import BookingPlatform, Restaurant, Table, Customer,Reservations, Experience, ReservationTags
 
 
 class BookingPlatformSerializer(serializers.ModelSerializer):
@@ -29,22 +29,24 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 
 class ReservationsCreateSerializer(serializers.ModelSerializer):
-    reservation_platform = serializers.PrimaryKeyRelatedField(queryset=BookingPlatform.objects.all())
+    source = serializers.PrimaryKeyRelatedField(queryset=BookingPlatform.objects.all())
     restaurant = serializers.PrimaryKeyRelatedField(queryset=Restaurant.objects.all())
     guest = serializers.PrimaryKeyRelatedField(queryset=Customer.objects.all())
+    experience = serializers.PrimaryKeyRelatedField(queryset=Experience.objects.all())
+    tags = serializers.PrimaryKeyRelatedField(queryset=ReservationTags.objects.all(), many=True)
 
     class Meta:
         model = Reservations
-        fields = ['reservation_platform', 'restaurant', 'guest' ,'size','reservation_time', 'status']
+        fields = ['source', 'has_tags' ,'restaurant', 'experience', 'tags' , 'guest' ,'size','reservation_time', 'status', 'visit_notes']
     
 
 
 class ReservationsListSerializer(serializers.ModelSerializer):
-    reservation_platform = BookingPlatformSerializer()
+    source = BookingPlatformSerializer()
     restaurant = RestaurantSerializer()
     guest = CustomerSerializer()
 
     class Meta:
         model = Reservations
-        fields = ['reservation_platform', 'restaurant', 'guest', 'reservation_time']
+        fields = ['source', 'restaurant', 'guest', 'reservation_time']
         

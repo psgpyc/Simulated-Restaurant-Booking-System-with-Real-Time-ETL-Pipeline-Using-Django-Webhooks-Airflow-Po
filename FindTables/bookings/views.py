@@ -3,7 +3,7 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from datetime import datetime
 
-from bookings.models import BookingPlatform, Restaurant, Table, Reservations, Customer
+from bookings.models import BookingPlatform, Restaurant, Table, Reservations, Customer, ReservationTags, Experience
 from bookings.serializers import BookingPlatformSerializer, RestaurantSerializer, TableSerializer, ReservationsCreateSerializer, ReservationsListSerializer
 
 
@@ -25,7 +25,7 @@ class TableListAPIView(generics.ListAPIView):
 
 
 class ReservationListAPIView(generics.ListAPIView):
-    queryset = Reservations.objects.all()
+    queryset = Reservations.objects.all().order_by('-created_at')
     serializer_class = ReservationsListSerializer
 
    
@@ -44,10 +44,17 @@ class ReservationCreateAPIView(views.APIView):
         reservation_platform = BookingPlatform.objects.get(name=source)
         restaurant = Restaurant.objects.first()
 
+
         data['reservation_time'] = datetime.strptime(f'{data.pop("reservation_date")} {data.pop("reservation_time")}', "%Y-%m-%d %H:%M")
         data['restaurant'] = restaurant.id
-        data['reservation_platform'] = reservation_platform.id
+        data['source'] = reservation_platform.id
         data['guest'] = customer_id.id
+        data['experience'] = Experience.objects.get(name=data.pop('experience')).id
+        data['tags'] = [ReservationTags.objects.get(name=each).id for each in data.pop('tags')]
+        data['has_tags'] = True if len(data['tags']) > 0 else False
+
+
+
 
         serializer = ReservationsCreateSerializer(data=data)
         if serializer.is_valid(raise_exception=True):

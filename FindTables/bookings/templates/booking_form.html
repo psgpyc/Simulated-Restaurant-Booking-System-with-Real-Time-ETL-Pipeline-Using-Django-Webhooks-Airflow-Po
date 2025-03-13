@@ -23,14 +23,6 @@
 
   <style>
     /* Hide native date picker icon */
-    input[type="date"]::-webkit-calendar-picker-indicator {
-      display: none;
-      -webkit-appearance: none;
-    }
-    input[type="date"]::-webkit-clear-button {
-      display: none;
-    }
-
     body {
       margin: 0;
       background-color: #f8faf9;
@@ -174,6 +166,30 @@
     .text-center.mt-3 {
       font-weight: 600;
     }
+    /* Tag Boxes */
+    .tag-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .tag-box {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      background-color: #fff;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+    .tag-box input[type='checkbox'] {
+      accent-color: #ff6b6b;
+      margin: 0;
+    }
+    .tag-box:hover {
+      background-color: #f7f7f7;
+    }
   </style>
 </head>
 <body>
@@ -181,12 +197,11 @@
     Complete Your Reservation
   </h3>
 
-
   <!-- Booking Details Box -->
   <div class="main-box">
     <div class="restaurant-title">The Restaurant</div>
 
-    <!-- Row for People / Date / Time -->
+    <!-- Row 1: People / Date / Time -->
     <div class="booking-row">
       <!-- People -->
       <div class="booking-col">
@@ -216,7 +231,32 @@
       </div>
     </div>
 
-   
+    <!-- Row 2: Experience / Payment Mode -->
+    <div class="booking-row">
+      <!-- Experience (replaces 'source') -->
+      <div class="booking-col">
+        <i class="bi bi-gift booking-icon"></i>
+        <select id="experience">
+          <option value="Ala Carte">Ala Carte</option>
+          <option value="Experience Vouchers">Experience Vouchers</option>
+          <option value="10% Off, Partner Hotels">10% Off, Partner Hotels</option>
+          <option value="Comp. Glass of Wine">Comp. Glass of Wine</option>
+          <option value="20% Off, Happy Hour">20% Off, Happy Hour</option>
+          <option value="Set Menu">Set Menu</option>
+        </select>
+      </div>
+      <!-- Payment Mode -->
+      <div class="booking-col">
+        <i class="bi bi-credit-card booking-icon"></i>
+        <select id="payment_mode">
+          <option value="on site" selected>On Site</option>
+          <option value="card hold">Credit Card Hold</option>
+          <option value="pre payment">Pre Payment</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
   <!-- User Details Box -->
   <div class="main-box">
     <div class="mb-3">
@@ -248,6 +288,35 @@
       </div>
     </div>
 
+    <!-- Reservation Tags horizontally in boxes (checkboxes) -->
+    <div class="mb-3">
+      <label class="form-label">Special Occasion</label>
+      <div class="tag-container">
+        <!-- new tags -->
+        <label class="tag-box">
+          <input type="checkbox" name="tagCheckbox" value="Business Meal" />
+          Business Meal
+        </label>      
+        <label class="tag-box">
+          <input type="checkbox" name="tagCheckbox" value="Graduation" />
+          Graduation
+        </label>
+        <label class="tag-box">
+          <input type="checkbox" name="tagCheckbox" value="Anniversary" />
+          Anniversary
+        </label>
+        <label class="tag-box">
+          <input type="checkbox" name="tagCheckbox" value="Birthday" />
+          Birthday
+        </label>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Visit Notes</label>
+      <textarea class="form-textarea" id="visit_notes" rows="3" placeholder="Additional notes..."></textarea>
+    </div>
+
     <button class="reserve-btn" id="reserveBtn">Reserve now</button>
 
     <div class="disclaimer">
@@ -265,20 +334,20 @@
     dateField.value = today;
 
     function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-      const cookies = document.cookie.split(';');
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
         }
       }
+      return cookieValue;
     }
-    return cookieValue;
-  }
-  const csrftoken = getCookie('csrftoken');
+    const csrftoken = getCookie('csrftoken');
 
     // Populate time from 12:00 PM to 11:30 PM in 15-min increments,
     // ensuring it starts at least 15 minutes in the future if after 12 PM.
@@ -290,10 +359,7 @@
       const timeSelect = document.getElementById('res_time');
       timeSelect.innerHTML = '';
 
-      // Earliest is 12:00 PM
-      let minTotalMins = 12 * 60;
-
-      // If it's already after 12 PM, skip times before now+15 mins
+      let minTotalMins = 12 * 60; // 12:00 PM
       if (currentHours >= 12) {
         const minutesRounded = currentMinutes + (15 - (currentMinutes % 15));
         const currentTimeInMins = currentHours * 60 + minutesRounded;
@@ -301,9 +367,7 @@
           minTotalMins = currentTimeInMins;
         }
       }
-
-      // Latest is 11:30 PM -> 23*60 + 30 = 1410
-      const maxTotalMins = 23 * 60 + 30;
+      const maxTotalMins = 23 * 60 + 30; // 11:30 PM -> 1410
 
       for (let mins = minTotalMins; mins <= maxTotalMins; mins += 15) {
         const h = Math.floor(mins / 60);
@@ -318,7 +382,7 @@
         timeSelect.appendChild(option);
       }
     }
-    // Initialize time options on page load
+    // Initialize on page load
     populateTimeOptions();
 
     // On date change, if not today => times from 12:00 PM, otherwise after now+15
@@ -330,15 +394,15 @@
       timeSelect.innerHTML = '';
 
       if (!isToday) {
-        // Start from 12:00 PM
         let minMins = 12 * 60; // 720
         const maxMins = 23 * 60 + 30; // 1410
         for (let mins = minMins; mins <= maxMins; mins += 15) {
           const hh = Math.floor(mins / 60);
           const mm = mins % 60;
-          const labelH = hh === 0 ? 12 : (hh > 12 ? hh - 12 : hh);
+          const labelH = hh === 0 ? 12 : hh > 12 ? hh - 12 : hh;
           const amPm = hh < 12 ? 'AM' : 'PM';
           const labelM = mm.toString().padStart(2, '0');
+
           const opt = document.createElement('option');
           opt.value = `${hh.toString().padStart(2, '0')}:${labelM}`;
           opt.textContent = `${labelH}:${labelM} ${amPm}`;
@@ -349,40 +413,66 @@
       }
     });
 
-    // ================== AJAX POST to the Backend ==================
+    // ================== AJAX POST ==================
     $("#reserveBtn").click(function(e) {
-      e.preventDefault(); // prevent page reload
+      e.preventDefault();
 
-      // 1) Gather form data
-      let data = {
+      // Gather checked tags
+      const selectedTags = [];
+      $("input[name='tagCheckbox']:checked").each(function() {
+        selectedTags.push($(this).val());
+      });
+
+      // Build data payload
+      const data = {
+        // From top box
         size: $("#people").val(),
         reservation_date: $("#res_date").val(),
         reservation_time: $("#res_time").val(),
+        experience: $("#experience").val(),
+        payment_mode: $("#payment_mode").val(),
+
+        // From user details box
         email: $("#email").val(),
         first_name: $("#first_name").val(),
         last_name: $("#last_name").val(),
         country_code: $("#country_code").val(),
         phone: $("#phone").val(),
-        source: 'fork',
-        status:'confirmed', 
+
+        // Reservation tags
+        tags: selectedTags,
+
+        source: 'The Spoon',
+
+        // Visit notes
+        visit_notes: $("#visit_notes").val()
       };
 
-      console.log(data)
-
-      // 2) Send AJAX request to your Django/DRF endpoint
       $.ajax({
         url: "http://127.0.0.1:8000/api/reservations/create",
         method: "POST",
         data: JSON.stringify(data),
         contentType: "application/json",
         headers: {
-        'X-CSRFToken': csrftoken
+          'X-CSRFToken': csrftoken
         },
         success: function(response) {
           alert("Reservation successful!");
-          $("#email")[0].reset();
-          $("#first_name")[0].reset();
-          $("#last_name")[0].reset();
+
+          // Reset form fields
+          $("#people").val("2");
+          $("#res_date").val(today);
+          populateTimeOptions();
+          $("#res_time").val("12:00");
+          $("#payment_mode").val("on site");
+          $("#email").val("");
+          $("#first_name").val("");
+          $("#last_name").val("");
+          $("#country_code").val("+44");
+          $("#phone").val("");
+          $("input[name='tagCheckbox']").prop("checked", false);
+          $("#visit_notes").val("");
+
           console.log("Server response:", response);
         },
         error: function(xhr, status, error) {
