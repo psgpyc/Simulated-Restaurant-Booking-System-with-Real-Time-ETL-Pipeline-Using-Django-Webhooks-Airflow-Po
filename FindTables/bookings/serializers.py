@@ -50,3 +50,12 @@ class ReservationsListSerializer(serializers.ModelSerializer):
         model = Reservations
         fields = ['source', 'restaurant', 'guest', 'reservation_time']
         
+# beyond creation
+
+
+class ReservationListDetailsSerialiser(serializers.ModelSerializer):
+    class Meta:
+        model = Reservations
+        fields = '__all__'
+        depth = 1
+

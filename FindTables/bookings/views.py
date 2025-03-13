@@ -1,10 +1,11 @@
 from rest_framework import generics, views
+from django.http import Http404
 from django.shortcuts import render
 from rest_framework.response import Response
 from datetime import datetime
 
 from bookings.models import BookingPlatform, Restaurant, Table, Reservations, Customer, ReservationTags, Experience
-from bookings.serializers import BookingPlatformSerializer, RestaurantSerializer, TableSerializer, ReservationsCreateSerializer, ReservationsListSerializer
+from bookings.serializers import BookingPlatformSerializer, RestaurantSerializer, TableSerializer, ReservationsCreateSerializer, ReservationsListSerializer, ReservationListDetailsSerialiser
 
 
 def booking_form_view(request):
@@ -62,4 +63,37 @@ class ReservationCreateAPIView(views.APIView):
             return Response({'data':'Your reservation has been successful!'})
         
         return Response({'data':'Issue with your data'})
+    
 
+class ReservationDetailAPIView(views.APIView):
+    """
+        Retrieve, update a reservation
+    """
+    def get_object(self, pk):
+        try:
+            return Reservations.objects.get(pk=pk)
+        except Reservations.DoesNotExist:
+            raise Http404
+        
+    def get(self, request,  pk, format=None):
+        reservation_instance = self.get_object(pk=pk)
+        serializer = ReservationListDetailsSerialiser(reservation_instance)
+        return Response(serializer.data)
+    
+    def put(self, request, pk, format=None):
+        reservation_instance = self.get_object(pk=pk)
+        data = request.data.copy()
+        # self.generate_valid(data=request.data)
+        data['source'] =  BookingPlatform.objects.get(**data['source']).id
+        data['guest'] = Customer.objects.get(**data['guest']).id
+        data['restaurant'] = Restaurant.objects.get(**data['restaurant']).id
+        data['experience'] = Experience.objects.get(**data['experience']).id
+        data['tags'] = [ReservationTags.objects.get(**each).id for each in data.pop('tags')]
+
+    
+        serializer = ReservationsCreateSerializer(reservation_instance, data=data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response({'data': serializer.data})
+        
+        return  Response({'data': 'error'})
