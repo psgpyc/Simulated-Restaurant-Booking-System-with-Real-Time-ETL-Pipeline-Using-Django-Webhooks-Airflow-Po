@@ -8,34 +8,19 @@ While these platforms are primarily booking tools—not full management systems�
 
 How do the restaurant do that? 
 
-A common guess will be through APIS!
+A common guess will be through APIs!
 
-While these booking platforms do offer APIs that can theoretically integrate with popular restaurant management systems. It comes with a cost. 
+These booking platforms do offer APIs that can theoretically integrate with popular restaurant management systems.
 
-Are the restaurants willing to pay extra?
-
-These platform already charge a flat fee for each of the bookings made via their service. 
-If you want to use their API for automating the process of migrating the data, you must pay for premium subscription. These subscriptions can come with steep costs and long term commitment(Contracts)—making it particularly challenging for small and medium-sized enterprises to afford and manage. 
-And you are not just paying or one! 
-
-Circling back to the question, some do, some don't!
-
-Many restaurants(small and medium-sized) opt for the cheapest option: pay the flat fee and manually migrate the incoming reservation data into their internal management system.
+Many restaurants(small and medium-sized) opt to manually migrate the incoming reservation data into their internal management system.
 
 It is not ideal-- but hey, it works!
 
-But we all know, this lack of a automated, centralised system severely hampers efficient operational management, analytics capabilities, and strategic decision-making. 
-
-You book a restaurant, you have the confirmation but the waiting staff can't seem to find it. 
-
-This is a pretty common occurance.
-
-So, this is a solution to this problem.
+But we all know, human error and lack of a automated, centralised system severely hampers analytics capabilities, and strategic decision-making. 
 
 This project implements an ETL pipeline orchestrated by Apache Airflow, designed to automate the whole process without human intervention. The pipeline seamlessly integrates reservation data from multiple platforms into a single, centralised warehouse.  </br>
 
-Since,these booking platform do not provide API endpoints unsless you are their customers, I have custom-built API endpoints that closely their endpoints & webhooks, providing realistic representations of data structures and responses from popular reservation platforms such as TheFork, Quandoo, OpenTable, and SevenRooms.
-
+Since,these booking platform do not provide API endpoints unless you are their customers, I have custom-built API endpoints that closely resembles their endpoints & webhooks, providing realistic representations of data structures and responses from popular reservation platforms such as TheFork, Quandoo, OpenTable, and SevenRooms.
 
 Additionally, the project features an interactive Tableau dashboard providing real-time analytics, offering clear insights into booking trends, reservation patterns, and platform performance metrics to support informed business decisions.
 
