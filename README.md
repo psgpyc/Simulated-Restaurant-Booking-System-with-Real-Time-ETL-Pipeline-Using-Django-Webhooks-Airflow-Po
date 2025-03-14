@@ -24,7 +24,7 @@ Since,these platform do not provide API endpoints unsless you are their customer
 
 ```mermaid
 flowchart TB
-    subgraph HorizontalFlow[Horizontal Flow]
+    subgraph HorizontalFlow[ ]
     direction LR
         A["Customer makes a reservation"]:::wrap --> B["Webhook sends POST request"]:::wrap --> C["Apache Airflow initiates pipeline"]:::wrap
     end
