@@ -23,22 +23,23 @@ This project implements an ETL pipeline orchestrated by Apache Airflow, designed
 Since,these platform do not provide API endpoints unsless you are their customers, I have custom-built API endpoints that closely their endpoints & webhooks, providing realistic representations of data structures and responses from popular reservation platforms such as TheFork, Quandoo, OpenTable, and SevenRooms.
 
 ```mermaid
-flowchart LR
-    A["Customer makes a reservation on Booking Platform"]:::wrap
-    B["Webhook sends POST request to Apache Airflow REST API endpoint"]:::wrap
-    C["Apache Airflow initiates pipeline"]:::wrap
-    D["Extract reservation data"]:::wrap
-    E["Transform, clean, and standardize data"]:::wrap
-    F["Load clean data into Centralized Data Warehouse"]:::wrap
-    G["Interactive Tableau dashboard provides updates in real-time"]:::wrap
+flowchart TB
+    %% Define a subgraph for the first three nodes horizontally
+    subgraph Horizontal Flow
+    direction LR
+        A["Customer makes a reservation on Booking Platform"]:::wrap
+        B["Webhook sends POST request to Apache Airflow REST API endpoint"]:::wrap
+        C["Apache Airflow initiates pipeline"]:::wrap
+        A --> B --> C
+    end
 
-    A --> B
-    B --> C
-    C --> D
-    D --> E
-    E --> F
-    F --> G
+    %% Continue vertically for the remaining steps
+    C --> D["Extract reservation data"]:::wrap
+    D --> E["Transform, clean, and standardize data"]:::wrap
+    E --> F["Load clean data into Centralized Data Warehouse"]:::wrap
+    F --> G["Interactive Tableau dashboard provides updates in real-time"]:::wrap
 
+    %% Styling to help with text wrapping
     classDef wrap text-align:left wrap:true width:200px
 ```
 
