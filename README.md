@@ -24,22 +24,18 @@ Since,these platform do not provide API endpoints unsless you are their customer
 
 ```mermaid
 flowchart TB
-    %% Define a subgraph for the first three nodes horizontally
-    subgraph Horizontal Flow
+    subgraph HorizontalFlow[Horizontal Flow]
     direction LR
-        A["Customer makes a reservation on Booking Platform"]:::wrap
-        B["Webhook sends POST request to Apache Airflow REST API endpoint"]:::wrap
-        C["Apache Airflow initiates pipeline"]:::wrap
-        A --> B --> C
+        A["Customer makes a reservation"]:::wrap --> B["Webhook sends POST request"]:::wrap --> C["Apache Airflow initiates pipeline"]:::wrap
     end
 
-    %% Continue vertically for the remaining steps
+    %% Continue vertically after the subgraph
     C --> D["Extract reservation data"]:::wrap
     D --> E["Transform, clean, and standardize data"]:::wrap
     E --> F["Load clean data into Centralized Data Warehouse"]:::wrap
     F --> G["Interactive Tableau dashboard provides updates in real-time"]:::wrap
 
-    %% Styling to help with text wrapping
+    %% Optional: define a class for wrapping text
     classDef wrap text-align:left wrap:true width:200px
 ```
 
