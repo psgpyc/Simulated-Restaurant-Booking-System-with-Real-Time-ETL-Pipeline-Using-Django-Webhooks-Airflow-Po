@@ -32,14 +32,13 @@ Additionally, this project includes **FindTables**, a **Django-based restaurant 
 
 ```
 📂 restaurant-booking-management  
-│── 📂 dags/                   # Apache Airflow DAGs for ETL workflows  
-│── 📂 FindTables/                   # Django-based FindTables booking system  
-│── 📂 queries/                  # PostgreSQL schema and scripts  
-│── 📂 dashboards/                # Tableau dashboard files  
-│── 📂 dags/helpers                   # Data extraction & transformation scripts  
+│── 📂 dags/                   # Apache Airflow DAGs for ETL workflows
+│── 📂 dags/helpers            # Data extraction & transformation scripts    
+│── 📂 FindTables/             # Django-based FindTables booking system  
+│── 📂 queries/                # PostgreSQL schema and scripts  
+│── 📂 dashboards/             # Tableau dashboard files  
 │── 📜 README.md                  # Project documentation  
-│── 📜 requirements.txt           # Python dependencies  
-│── 📜 docker-compose.yml         # Docker setup for deployment  
+
 ```
 
 ---
@@ -61,7 +60,7 @@ Additionally, this project includes **FindTables**, a **Django-based restaurant 
 ## How It Works
 
 ### Extract Booking Data
-- Airflow DAGs receives **reservation data** from  custom built webhooks.
+- Airflow DAGs receives **reservation data** from custom built webhooks in Django.
 - Data is fetched in different formats (JSON, CSV) and standardized.
 
 ### Transform & Standardize
