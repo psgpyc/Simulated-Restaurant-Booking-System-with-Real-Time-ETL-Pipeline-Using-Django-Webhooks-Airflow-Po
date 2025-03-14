@@ -4,26 +4,37 @@
 
 Restaurant today relies on several booking platforms such as The Fork, Quandoo, Open Table, and Design My Nights. When a reservation is made through any of these channels, restaurants receive an immediate email notification, and each platform offers a dedicated web interface where current, past, and future bookings can be viewed. This system allows for real-time updates on guest reservations and historical data, which can be essential for managing capacity and planning operations. 
 
-While these platforms are primarily booking tools—not full management systems—restaurants are left with two options: either manage reservations individually in each web interface or migrate the data into a centralized management system for operational efficiency. 
-Now, a significant challenge emerges: migrating all bookings into a single table/restaurant management system. 
+While these platforms are primarily booking tools—not full management systems—restaurants migrate the booking data into a centralized management system for operational efficiency. 
 
-While these booking platforms do offer APIs that can theoretically integrate with popular restaurant management systems. But, it comes with a cost. 
+How do the restaurant do that? 
+
+A common guess will be through APIS!
+
+While these booking platforms do offer APIs that can theoretically integrate with popular restaurant management systems. It comes with a cost. 
+
+Are the restaurants willing to pay extra?
+
 These platform already charge a flat fee for each of the bookings made via their service. 
 If you want to use their API for automating the process of migrating the data, you must pay for premium subscription. These subscriptions can come with steep costs and long term commitment(Contracts)—making it particularly challenging for small and medium-sized enterprises to afford and manage. 
-Remember, you are not just paying or one! 
+And you are not just paying or one! 
 
-Therefore, many restaurants opt for the cheapest option: pay the flat fee and manually migrate the incoming reservation data into their internal management system.
+Circling back to the question, some do, some don't!
 
-It is not efficient, but it works if you just want to manage reservations. However, human error can introduce potential inaccuracies, making it cumbersome to effectively conduct analytics and support informed decision-making.
+Many restaurants(small and medium-sized) opt for the cheapest option: pay the flat fee and manually migrate the incoming reservation data into their internal management system.
 
-This lack of a automated, centralised system severely hampers efficient operational management, analytics capabilities, and strategic decision-making. 
+It is not ideal-- but hey, it works!
 
-This project implements an ETL pipeline orchestrated by Apache Airflow, designed to automate the process without human intervention. The pipeline seamlessly integrates reservation data from multiple platforms into a single, centralised warehouse.  </br>
+But we all know, this lack of a automated, centralised system severely hampers efficient operational management, analytics capabilities, and strategic decision-making. 
 
-Since,these platform do not provide API endpoints unsless you are their customers, I have custom-built API endpoints that closely their endpoints & webhooks, providing realistic representations of data structures and responses from popular reservation platforms such as TheFork, Quandoo, OpenTable, and SevenRooms.
+You book a restaurant, you have the confirmation but the waiting staff can't seem to find it. 
 
+This is a pretty common occurance.
 
+So, this is a solution to this problem.
 
+This project implements an ETL pipeline orchestrated by Apache Airflow, designed to automate the whole process without human intervention. The pipeline seamlessly integrates reservation data from multiple platforms into a single, centralised warehouse.  </br>
+
+Since,these booking platform do not provide API endpoints unsless you are their customers, I have custom-built API endpoints that closely their endpoints & webhooks, providing realistic representations of data structures and responses from popular reservation platforms such as TheFork, Quandoo, OpenTable, and SevenRooms.
 
 
 Additionally, the project features an interactive Tableau dashboard providing real-time analytics, offering clear insights into booking trends, reservation patterns, and platform performance metrics to support informed business decisions.
