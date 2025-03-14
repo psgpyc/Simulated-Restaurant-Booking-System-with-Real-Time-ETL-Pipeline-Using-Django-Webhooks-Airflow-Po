@@ -3,6 +3,8 @@ __pycache__/
 */*/__pycache__/
 *.py[cod]
 *$py.class
+findtables.pem
+
 
 # Django stuff
 *.log

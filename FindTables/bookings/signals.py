@@ -17,7 +17,13 @@ def send_webhook(instance, created):
     data= {
         "conf": {
         "reservation_id": instance.id,
-        "guest": instance.guest.name,
+        "guest": {
+             "customer_id": instance.guest.id,
+             "customer_name": instance.guest.name,
+             "customer_email": instance.guest.email, 
+             "customer_phone": instance.guest.phone_number,
+             "joined_date": instance.guest.created_at.isoformat()
+        }, 
         "size": instance.size,
         "reservation_time": instance.reservation_time.isoformat(),
         "experience": instance.experience.name, 

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class BookingPlatform(models.Model):
@@ -23,6 +24,7 @@ class Table(models.Model):
     table_number = models.CharField(max_length=10)
     capacity = models.IntegerField()
     belongs_to = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ['table_number', 'belongs_to']
@@ -35,6 +37,7 @@ class Customer(models.Model):
     name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=15)
     email = models.EmailField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ['name', 'phone_number']
