@@ -1,4 +1,4 @@
-# Automating Multi-Platform Restaurant Booking Management with Apache Airflow
+# Automated ETL Pipeline for Multi-Platform Restaurant Booking Data Integration and Analytics
 
 ## Project Overview
 
