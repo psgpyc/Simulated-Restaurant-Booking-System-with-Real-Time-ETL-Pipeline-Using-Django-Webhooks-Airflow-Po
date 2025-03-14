@@ -24,12 +24,12 @@ Since,these platform do not provide API endpoints unsless you are their customer
 
 ```mermaid
 flowchart TD
-A[Customer makes a reservation on Booking Platform] –> B(Webhook triggered)
-B[“Webhook sends POST request to Apache Airflow REST API endpoint”] –> C[“Apache Airflow initiates pipeline”]
-C –> D[“Extract reservation data”]
-D –> E[“Transform, clean, and standardise data”]
-E –> F[“Load clean data into Centralised Data Warehouse”]
-F –> G[“Interactive Tableau dashboard provides updates in real-time”]
+    A[Customer makes a reservation on Booking Platform] --> B(Webhook triggered)
+    B["Webhook sends POST request to Apache Airflow REST API endpoint"] --> C["Apache Airflow initiates pipeline"]
+    C --> D["Extract reservation data"]
+    D --> E["Transform, clean, and standardise data"]
+    E --> F["Load clean data into Centralised Data Warehouse"]
+    F --> G["Interactive Tableau dashboard provides updates in real-time"]
 ```
 
 
