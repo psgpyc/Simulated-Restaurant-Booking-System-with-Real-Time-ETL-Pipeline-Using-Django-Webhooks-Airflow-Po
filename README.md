@@ -2,13 +2,39 @@
 
 ## Project Overview
 
-This project automates the management of restaurant bookings through a robust ETL pipeline orchestrated by Apache Airflow.   
-It simulates data flows from multiple restaurant booking services using custom-built APIs that closely resemble real-world endpoints. 
-For example, the system includes simulated APIs representing data structures and responses from popular platforms such as TheFork, Quandoo, OpenTable, and SevenRooms.
-The system extracts reservation data from **API endpoints**, standardizes it, and stores it in a **PostgreSQL** database for centralized tracking. 
-A **Tableau Dashboard** provides insights into booking trends, occupancy rates, and platform performance.
+Restaurant today relies on several booking platforms such as The Fork, Quandoo, Open Table, and Design My Nights. When a reservation is made through any of these channels, restaurants receive an immediate email notification, and each platform offers a dedicated web interface where current, past, and future bookings can be viewed. This system allows for real-time updates on guest reservations and historical data, which can be essential for managing capacity and planning operations. \
 
-Additionally, this project includes **FindTables**, a **Django-based restaurant booking system** that simulates real-world table reservations. Users can make and manage reservations through API endpoints and a **frontend**.
+While these platforms are primarily booking tools—not full management systems—restaurants are left with two options: either manage reservations individually in each web interface or migrate the data into a centralized management system for operational efficiency. \
+Now, a significant challenge emerges: migrating all bookings into a single table/restaurant management system. \
+
+While these booking platforms do offer APIs that can theoretically integrate with popular restaurant management systems. But, it comes with a cost. 
+These platform already charge a flat fee for each of the bookings made via their service. 
+If you want to use their API for automating the process of migrating the data, you must pay for premium subscription. These subscriptions can come with steep costs and long term commitment(Contracts)—making it particularly challenging for small and medium-sized enterprises to afford and manage. 
+Remember, you are not just paying or one! \
+
+Therefore, many restaurants opt for the cheapest option: pay the flat fee and manually migrate the incoming reservation data into their internal management system.
+
+It is not efficient, but it works if you just want to manage reservations. However, human error can introduce potential inaccuracies, making it cumbersome to effectively conduct analytics and support informed decision-making.
+
+This lack of a automated, centralised system severely hampers efficient operational management, analytics capabilities, and strategic decision-making. \
+
+This project implements an ETL pipeline orchestrated by Apache Airflow, designed to automate the process without human intervention. The pipeline seamlessly integrates reservation data from multiple platforms into a single, centralised warehouse.  </br>
+
+Since,these platform do not provide API endpoints unsless you are their customers, I have custom-built API endpoints that closely their endpoints & webhooks, providing realistic representations of data structures and responses from popular reservation platforms such as TheFork, Quandoo, OpenTable, and SevenRooms.
+
+flowchart TD
+    A[Customer makes a reservation on Booking Platform] --> B(Webhook triggered)
+    B["Webhook sends POST request to Apache Airflow REST API endpoint"] --> C["Apache Airflow initiates pipeline"]
+    C --> D["Extract reservation data"]
+    D --> E["Transform, clean, and standardise data"]
+    E --> F["Load clean data into Centralised Data Warehouse"]
+    F --> G["Interactive Tableau dashboard provides updates in real-time"]
+
+
+
+Additionally, the project features an interactive Tableau dashboard providing real-time analytics, offering clear insights into booking trends, reservation patterns, and platform performance metrics to support informed business decisions.
+
+Additionally, this project includes **FindTables**, a basic **Django-based restaurant booking system** that simulates real-world table reservations. Users can make and manage reservations through API endpoints and a **frontend**.
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/98eb1307-1f0a-4461-9231-c99e174b46ae" alt="Project Image">
