@@ -1,13 +1,18 @@
 # Automating Multi-Platform Restaurant Booking Management with Apache Airflow
 
 ## Project Overview
-This project automates the management of restaurant bookings across multiple platforms (**TheFork, Quandoo, OpenTable, SevenRooms**) using **Apache Airflow** to orchestrate ETL workflows. The system extracts reservation data from **API endpoints**, standardizes it, and stores it in a **PostgreSQL** database for centralized tracking. 
+
+This project automates the management of restaurant bookings through a robust ETL pipeline orchestrated by Apache Airflow.   
+It simulates data flows from multiple restaurant booking services using custom-built APIs that closely resemble real-world endpoints. 
+For example, the system includes simulated APIs representing data structures and responses from popular platforms such as TheFork, Quandoo, OpenTable, and SevenRooms.
+The system extracts reservation data from **API endpoints**, standardizes it, and stores it in a **PostgreSQL** database for centralized tracking. 
 A **Tableau Dashboard** provides insights into booking trends, occupancy rates, and platform performance.
 
 Additionally, this project includes **FindTables**, a **Django-based restaurant booking system** that simulates real-world table reservations. Users can make and manage reservations through API endpoints and a **frontend**.
 
-![image](https://github.com/user-attachments/assets/98eb1307-1f0a-4461-9231-c99e174b46ae)
-
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/98eb1307-1f0a-4461-9231-c99e174b46ae" alt="Project Image">
+</div>
 
 ---
 
