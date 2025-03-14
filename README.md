@@ -24,12 +24,11 @@ Additionally, this project includes **FindTables**, a **Django-based restaurant 
 
 ```
 📂 restaurant-booking-management  
-│── 📂 airflow/                   # Apache Airflow DAGs for ETL workflows  
+│── 📂 dags/                   # Apache Airflow DAGs for ETL workflows  
 │── 📂 FindTables/                   # Django-based FindTables booking system  
-│── 📂 database/                  # PostgreSQL schema and scripts  
+│── 📂 queries/                  # PostgreSQL schema and scripts  
 │── 📂 dashboards/                # Tableau dashboard files  
-│── 📂 scripts/                   # Data extraction & transformation scripts  
-│── 📂 frontend/                  # frontend booking interface  
+│── 📂 dags/helpers                   # Data extraction & transformation scripts  
 │── 📜 README.md                  # Project documentation  
 │── 📜 requirements.txt           # Python dependencies  
 │── 📜 docker-compose.yml         # Docker setup for deployment  
@@ -44,7 +43,7 @@ Additionally, this project includes **FindTables**, a **Django-based restaurant 
 | **Orchestration**  | Apache Airflow  |
 | **Backend**        | Django & DRF |
 | **Database**       | PostgreSQL|
-| **Data Processing** | Pandas, Python |
+| **Data Processing** | Pydantic, Pandas, Python |
 | **Visualization**  | Tableau |
 | **Frontend**       | jQuery, HTML, CSS |
 | **Deployment**     | Docker, AWS |
@@ -54,19 +53,19 @@ Additionally, this project includes **FindTables**, a **Django-based restaurant 
 ## How It Works
 
 ### Extract Booking Data
-- Airflow DAGs extract **mock booking data** from TheFork, Quandoo, OpenTable, and SevenRooms APIs.
+- Airflow DAGs receives **reservation data** from  custom built webhooks.
 - Data is fetched in different formats (JSON, CSV) and standardized.
 
 ### Transform & Standardize
 - Python scripts clean, validate, and standardize booking data.
-- Ensures uniformity in fields like `order_id`, `customer_name`, `booking_time`, `restaurant_id`, etc.
+- Ensures uniformity across seperate databases. 
 
 ### Load into Database
-- Standardized data is stored in **PostgreSQL/MySQL**.
+- Standardized data is stored in **PostgreSQL**.
 - Enables **efficient querying** and integration with the dashboard.
 
 ### Dashboard Analysis
-- Tableau/Power BI visualizes:
+- Tableau visualizes:
   - **Booking trends** across platforms
   - **Occupancy rates** per restaurant
   - **Platform performance** comparisons
@@ -85,5 +84,5 @@ This project is licensed under the **MIT License**.
 ---
 
 ## 📩 Contact & Contributions
-- **Author:** Paritosh & Ayurma  
+- **Author:** Paritosh   
 - **Contributions:** PRs are welcome! Open an issue for suggestions.  
