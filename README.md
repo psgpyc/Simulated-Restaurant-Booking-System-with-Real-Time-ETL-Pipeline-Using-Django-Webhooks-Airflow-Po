@@ -22,7 +22,7 @@ This project implements an ETL pipeline orchestrated by Apache Airflow, designed
 
 Since,these platform do not provide API endpoints unsless you are their customers, I have custom-built API endpoints that closely their endpoints & webhooks, providing realistic representations of data structures and responses from popular reservation platforms such as TheFork, Quandoo, OpenTable, and SevenRooms.
 
-![image](https://github.com/user-attachments/assets/500a979d-3867-4446-b3c8-b9cb3740107d)
+
 
 
 
@@ -35,29 +35,31 @@ flowchart TB
 
     subgraph Begin
     direction TB
-        A["Customer makes a<br/>reservation on Booking Platform"] --> 
-        B["Webhook sends POST<br/>request to Apache Airflow API"] --> 
-        C["Apache Airflow<br/>initiates pipeline"] 
+        A["Customer makes a<br/>reservation <br/> on Booking <br/> Platform"] --> 
+        B["Webbhook sends <br\> POSTrequest <br/> to Apache Airflow API"] --> 
+        C["<br/>Initiates Airflow pipeline"] 
     end 
     
     %% Three nodes arranged horizontally with manual line breaks for wrapping
     subgraph Pipeline
     direction LR
         D["Extract<br/>reservation data"] --> 
-        E["Transform, clean,<br/>and standardize data"] --> 
-        F["Load clean data<br/>into Centralized Data Warehouse"] 
+        E["Transform, clean,<br/>and standardize <br/>data"] --> 
+        F["Load data<br/>into Centralized <br/> Data Warehouse"] 
         
     end
 
     subgraph Analytics
     direction LR
-    G["Interactive Tableau dashboard<br/>provides updates in real-time"]
+    G["Interactive Tableau dashboard<br/>provides updates <br/>in real-time"]
     end
 
     %% Subgraph for vertical flow (top-to-bottom)
     
     Begin --> Pipeline --> Analytics
 ```
+
+### Airflow Pipeline
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/98eb1307-1f0a-4461-9231-c99e174b46ae" alt="Project Image">
