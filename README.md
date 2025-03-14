@@ -36,7 +36,7 @@ flowchart TB
     subgraph Begin
     direction TB
         A["Customer makes a<br/>reservation <br/> on Booking <br/> Platform"] --> 
-        B["Webbhook sends <br\> POSTrequest <br/> to Apache Airflow API"] --> 
+        B["Webbhook:<br\> POST request <br/> to Apache Airflow API"] --> 
         C["<br/>Initiates Airflow pipeline"] 
     end 
     
