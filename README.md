@@ -6,6 +6,9 @@ A **Tableau Dashboard** provides insights into booking trends, occupancy rates, 
 
 Additionally, this project includes **FindTables**, a **Django-based restaurant booking system** that simulates real-world table reservations. Users can make and manage reservations through API endpoints and a **frontend**.
 
+![image](https://github.com/user-attachments/assets/98eb1307-1f0a-4461-9231-c99e174b46ae)
+
+
 ---
 
 ## Features
