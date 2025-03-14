@@ -29,6 +29,35 @@ Since,these platform do not provide API endpoints unsless you are their customer
 Additionally, the project features an interactive Tableau dashboard providing real-time analytics, offering clear insights into booking trends, reservation patterns, and platform performance metrics to support informed business decisions.
 
 Additionally, this project includes **FindTables**, a basic **Django-based restaurant booking system** that simulates real-world table reservations. Users can make and manage reservations through API endpoints and a **frontend**.
+```mermaid
+flowchart TB
+
+
+    subgraph Begin
+    direction TB
+        A["Customer makes a<br/>reservation on Booking Platform"] --> 
+        B["Webhook sends POST<br/>request to Apache Airflow API"] --> 
+        C["Apache Airflow<br/>initiates pipeline"] 
+    end 
+    
+    %% Three nodes arranged horizontally with manual line breaks for wrapping
+    subgraph Pipeline
+    direction LR
+        D["Extract<br/>reservation data"] --> 
+        E["Transform, clean,<br/>and standardize data"] --> 
+        F["Load clean data<br/>into Centralized Data Warehouse"] 
+        
+    end
+
+    subgraph Analytics
+    direction LR
+    G["Interactive Tableau dashboard<br/>provides updates in real-time"]
+    end
+
+    %% Subgraph for vertical flow (top-to-bottom)
+    
+    Begin --> Pipeline --> Analytics
+```
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/98eb1307-1f0a-4461-9231-c99e174b46ae" alt="Project Image">
