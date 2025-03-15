@@ -25,7 +25,7 @@ class TableSerializer(serializers.ModelSerializer):
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ['name', 'phone_number']
+        fields = ['id','name', 'phone_number']
 
 
 class ReservationsCreateSerializer(serializers.ModelSerializer):
@@ -82,3 +82,7 @@ class OrdersListSerializer(serializers.ModelSerializer):
         model = Orders
         fields = ['id', 'customer_id', 'order_items','total_price']
 
+
+
+class OrderCreateSerializer(serializers.ModelSerializer):
+    pass

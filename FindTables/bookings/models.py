@@ -128,6 +128,7 @@ class Orders(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     total_price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
+    is_completed = models.BooleanField(default=False)
 
 
     def calculate_total_price(self):
@@ -138,8 +139,12 @@ class Orders(models.Model):
         self.save(update_fields=['total_price'])
 
 
+
     def __str__(self):
         return f"Order {self.id} - {self.created_at.strftime('%Y-%m-%d %H:%M:%S')}"
+    
+    class Meta:
+        ordering = ['-updated_at']
 
 
 

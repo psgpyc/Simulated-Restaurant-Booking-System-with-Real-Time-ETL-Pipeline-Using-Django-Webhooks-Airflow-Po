@@ -3,7 +3,7 @@ from bookings.views import (
     BookiPlatformListAPIView, RestaurantListAPIView, 
     TableListAPIView, ReservationCreateAPIView, 
     ReservationListAPIView, ReservationDetailAPIView,
-    OrdersListApiView
+    OrdersListApiView, OrdersCreateApiView
 )
 
 
@@ -15,7 +15,8 @@ urlpatterns = [
     path('reservations/list', ReservationListAPIView.as_view(), name='reservation_api_list_view'),
     path('reservations/<int:pk>',ReservationDetailAPIView.as_view(), name='reservation_api_detail_view' ),
 
-    path('orders/', OrdersListApiView.as_view(), name='orders_list_view')
+    path('orders/', OrdersListApiView.as_view(), name='orders_list_view'),
+    path('orders/<int:pk>/', OrdersCreateApiView.as_view(), name="orders_create_view")
 
     
 ]

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Place Your Order</title>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    /* -----------------------
+       Basic Resets & Globals
+    ------------------------- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      color: #333;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ------------
+       Main Layout
+    -------------- */
+    .main-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .heading {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .heading h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    /* Customer Dropdown */
+    .customer-select {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto 30px;
+      display: flex;
+      justify-content: center;
+    }
+    .customer-select select {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    /* Two-column layout */
+    .content {
+      display: flex;
+      gap: 20px;
+    }
+    /* Left column (menu) */
+    .menu-column {
+      flex: 3;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    /* Right column (summary) */
+    .summary-column {
+      flex: 2;
+    }
+
+    /* ----------------
+       Menu Item Card
+    ------------------ */
+    .menu-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .menu-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .menu-card h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    .menu-card .price {
+      font-size: 16px;
+      color: #777;
+      margin-bottom: 20px;
+    }
+    .menu-card .quantity-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    .menu-card .quantity-group input[type="number"] {
+      width: 60px;
+      padding: 5px;
+      text-align: center;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .menu-card .select-btn {
+      display: inline-block;
+      width: 100%;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      font-size: 16px;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .menu-card .select-btn:hover {
+      background-color: #0056b3;
+    }
+
+    /* ------------------
+       Order Summary Card
+    --------------------- */
+    .summary-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+    .summary-card h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 600;
+    }
+    .summary-items {
+      margin-bottom: 20px;
+    }
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+    .summary-item-name {
+      font-weight: 500;
+    }
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      font-size: 16px;
+      border-top: 1px solid #ccc;
+      padding-top: 10px;
+    }
+    /* Place Order button in summary */
+    .place-order-btn {
+      display: block;
+      width: 100%;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      font-size: 16px;
+      padding: 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .place-order-btn:hover {
+      background-color: #218838;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .content {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <div class="heading">
+      <h1>Place Your Order</h1>
+    </div>
+
+    <!-- Customer Selection -->
+    <div class="customer-select">
+      <select id="customerSelect">
+        <option value="">Select a Customer</option>
+        <!-- Dynamically populated via AJAX -->
+      </select>
+    </div>
+
+    <div class="content">
+      <!-- Left Column: Menu Items -->
+      <div class="menu-column">
+        <!-- Example Menu Card -->
+        <div class="menu-card" data-id="1" data-name="Margherita Pizza" data-price="9.99">
+          <h3>Margherita Pizza</h3>
+          <div class="price">$9.99</div>
+          <div class="quantity-group">
+            <label for="qty1">Qty:</label>
+            <input type="number" id="qty1" min="0" value="0" />
+          </div>
+          <button class="select-btn">Select</button>
+        </div>
+
+        <div class="menu-card" data-id="2" data-name="Pepperoni Pizza" data-price="11.99">
+          <h3>Pepperoni Pizza</h3>
+          <div class="price">$11.99</div>
+          <div class="quantity-group">
+            <label for="qty2">Qty:</label>
+            <input type="number" id="qty2" min="0" value="0" />
+          </div>
+          <button class="select-btn">Select</button>
+        </div>
+
+        <div class="menu-card" data-id="3" data-name="Veggie Burger" data-price="8.49">
+          <h3>Veggie Burger</h3>
+          <div class="price">$8.49</div>
+          <div class="quantity-group">
+            <label for="qty3">Qty:</label>
+            <input type="number" id="qty3" min="0" value="0" />
+          </div>
+          <button class="select-btn">Select</button>
+        </div>
+
+        <div class="menu-card" data-id="4" data-name="French Fries" data-price="3.99">
+          <h3>French Fries</h3>
+          <div class="price">$3.99</div>
+          <div class="quantity-group">
+            <label for="qty4">Qty:</label>
+            <input type="number" id="qty4" min="0" value="0" />
+          </div>
+          <button class="select-btn">Select</button>
+        </div>
+
+        <!-- Add more items similarly as needed -->
+      </div>
+
+      <!-- Right Column: Order Summary -->
+      <div class="summary-column">
+        <div class="summary-card">
+          <h2>Selected Items</h2>
+          <div class="summary-items" id="summaryItems">
+            <!-- Dynamically updated -->
+          </div>
+          <div class="summary-total" id="summaryTotal">
+            <span>Total:</span>
+            <span>$0.00</span>
+          </div>
+          <button class="place-order-btn" id="placeOrder">Place Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Store selected items in an array of objects
+    let selectedItems = [];
+
+    $(document).ready(function() {
+      // 1) Populate the customer dropdown
+      $.ajax({
+        url: '/api/customers',  // Replace with your actual endpoint
+        method: 'GET',
+        dataType: 'json',
+        success: function(customers) {
+          // Assuming 'customers' is an array of objects with { id, name }
+          customers.forEach(customer => {
+            $('#customerSelect').append(
+              $('<option>', { value: customer.id, text: customer.name })
+            );
+          });
+        },
+        error: function() {
+          alert('Failed to load customers. Please try again.');
+        }
+      });
+
+      // 2) Handle "Select" button click on each menu card
+      $('.select-btn').on('click', function() {
+        const card = $(this).closest('.menu-card');
+        const itemId = card.data('id');
+        const itemName = card.data('name');
+        const itemPrice = parseFloat(card.data('price'));
+        const qtyInput = card.find('input[type="number"]');
+        const quantity = parseInt(qtyInput.val(), 10);
+
+        if (!quantity || quantity <= 0) {
+          alert('Please enter a valid quantity (greater than 0).');
+          return;
+        }
+
+        // Check if this item already exists in selectedItems
+        let existingItem = selectedItems.find(item => item.id === itemId);
+        if (existingItem) {
+          // Update existing item quantity
+          existingItem.quantity = quantity;
+        } else {
+          // Add new item
+          selectedItems.push({
+            id: itemId,
+            name: itemName,
+            price: itemPrice,
+            quantity: quantity
+          });
+        }
+
+        // Update summary UI
+        updateSummary();
+      });
+
+      // 3) Handle placing the order
+      $('#placeOrder').on('click', function() {
+        const selectedCustomer = $('#customerSelect').val();
+        if (!selectedCustomer) {
+          alert('Please select a customer.');
+          return;
+        }
+        if (selectedItems.length === 0) {
+          alert('Please select at least one item.');
+          return;
+        }
+
+        // Prepare order data
+        const orderData = {
+          customerId: selectedCustomer,
+          items: selectedItems
+        };
+
+        // POST the order to the server
+        $.ajax({
+          url: '/api/orders', // Replace with your actual endpoint
+          method: 'POST',
+          data: JSON.stringify(orderData),
+          contentType: 'application/json',
+          success: function(response) {
+            // Show success message or do whatever you need
+            alert('Order placed successfully! Order ID: ' + response.orderId);
+            // Clear the selection
+            selectedItems = [];
+            updateSummary();
+            // Optionally reset all quantities to 0
+            $('.menu-card input[type="number"]').val(0);
+          },
+          error: function() {
+            alert('Failed to place order. Please try again.');
+          }
+        });
+      });
+    });
+
+    // Update the order summary on the right
+    function updateSummary() {
+      const $summaryItems = $('#summaryItems');
+      const $summaryTotal = $('#summaryTotal span').last();
+
+      $summaryItems.empty();
+      let total = 0;
+
+      selectedItems.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        // Create a row in summary for this item
+        const $itemRow = $('<div class="summary-item"></div>');
+        const $itemName = $('<span class="summary-item-name"></span>').text(`${item.name} (x${item.quantity})`);
+        const $itemPrice = $('<span></span>').text(`$${itemTotal.toFixed(2)}`);
+        $itemRow.append($itemName).append($itemPrice);
+        $summaryItems.append($itemRow);
+      });
+
+      $summaryTotal.text(`$${total.toFixed(2)}`);
+    }
+  </script>
+</body>
+</html>

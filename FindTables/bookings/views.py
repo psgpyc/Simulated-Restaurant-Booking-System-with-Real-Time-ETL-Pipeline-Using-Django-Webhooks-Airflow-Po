@@ -4,7 +4,7 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from datetime import datetime
 
-from bookings.models import BookingPlatform, Restaurant, Table, Reservations, Customer, ReservationTags, Experience, Orders
+from bookings.models import BookingPlatform, Restaurant, Table, Reservations, Customer, ReservationTags, Experience, Orders, OrderItem,MenuItem
 from bookings.serializers import (
     BookingPlatformSerializer, RestaurantSerializer, TableSerializer, 
     ReservationsCreateSerializer, ReservationsListSerializer, ReservationListDetailsSerialiser,
@@ -14,6 +14,10 @@ from bookings.serializers import (
 
 def booking_form_view(request):
     return render(request, "booking_form.html")
+
+
+def place_order_view(request):
+    return render(request, "place_order.html")
 
 class BookiPlatformListAPIView(generics.ListAPIView):
     queryset = BookingPlatform.objects.all()
@@ -107,3 +111,34 @@ class OrdersListApiView(generics.ListAPIView):
     queryset = Orders.objects.all()
     serializer_class = OrdersListSerializer
 
+class OrdersCreateApiView(views.APIView):
+    def get_object(self, pk):
+        """
+            Returns a customer id associated with the order
+        """
+        try:
+            return Customer.objects.get(pk=pk)
+        except Reservations.DoesNotExist:
+            raise Http404
+
+    def post(self, request, pk, format=None):
+        cus_id = self.get_object(pk=pk)
+        ord_obj, created = Orders.objects.get_or_create(customer_id=cus_id, is_completed=False)
+
+        menu_items = request.data.pop("order_items")
+            
+        through_obj = [
+            OrderItem(
+                order=ord_obj,
+                menu_item=MenuItem.objects.get(id=item['menu_item']),
+                quantity=item['quantity']
+            )
+            for item in menu_items
+
+        ]
+        OrderItem.objects.bulk_create(through_obj)
+
+        ord_obj.calculate_total_price()
+
+
+        return Response({'data':''})
