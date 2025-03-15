@@ -4,8 +4,12 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from datetime import datetime
 
-from bookings.models import BookingPlatform, Restaurant, Table, Reservations, Customer, ReservationTags, Experience
-from bookings.serializers import BookingPlatformSerializer, RestaurantSerializer, TableSerializer, ReservationsCreateSerializer, ReservationsListSerializer, ReservationListDetailsSerialiser
+from bookings.models import BookingPlatform, Restaurant, Table, Reservations, Customer, ReservationTags, Experience, Orders
+from bookings.serializers import (
+    BookingPlatformSerializer, RestaurantSerializer, TableSerializer, 
+    ReservationsCreateSerializer, ReservationsListSerializer, ReservationListDetailsSerialiser,
+    OrdersListSerializer)
+
 
 
 def booking_form_view(request):
@@ -97,3 +101,9 @@ class ReservationDetailAPIView(views.APIView):
             return Response({'data': serializer.data})
         
         return  Response({'data': 'error'})
+
+
+class OrdersListApiView(generics.ListAPIView):
+    queryset = Orders.objects.all()
+    serializer_class = OrdersListSerializer
+

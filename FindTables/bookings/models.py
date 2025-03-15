@@ -110,7 +110,7 @@ class MenuItem(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     course = models.CharField(
         max_length=50, 
-        choices=[('started', 'Started'),('mains', 'Main Course'),('dessert', 'Dessert'), ('sides', 'Sides')]
+        choices=[('started', 'Starter'),('mains', 'Main Course'),('dessert', 'Dessert'), ('sides', 'Sides')]
     )
     is_available = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -124,6 +124,7 @@ class MenuItem(models.Model):
     
 class Orders(models.Model):
     menu_items = models.ManyToManyField(MenuItem, through='OrderItem')
+    customer_id = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     total_price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
@@ -146,6 +147,11 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Orders, on_delete=models.CASCADE, )
     menu_item = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # Save the OrderItem first
+        self.order.calculate_total_price() 
+
 
     def __str__(self):
         return f"{self.quantity} x {self.menu_item.name}"

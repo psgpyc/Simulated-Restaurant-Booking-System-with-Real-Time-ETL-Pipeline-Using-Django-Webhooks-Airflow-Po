@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from bookings.models import BookingPlatform, Restaurant, Table, Customer,Reservations, Experience, ReservationTags
+from bookings.models import BookingPlatform, Restaurant, Table, Customer,Reservations, Experience, ReservationTags, OrderItem, Orders, MenuItem
 
 
 class BookingPlatformSerializer(serializers.ModelSerializer):
@@ -58,4 +58,27 @@ class ReservationListDetailsSerialiser(serializers.ModelSerializer):
         model = Reservations
         fields = '__all__'
         depth = 1
+
+#  -----------------------------------------------------------------------
+
+class MenuItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MenuItem
+        fields = ['id', 'price', 'course' ,'name']
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    menu_item = MenuItemSerializer()
+
+    class Meta:
+        model = OrderItem
+        fields = ['menu_item', 'quantity']
+
+
+class OrdersListSerializer(serializers.ModelSerializer):
+    customer_id = CustomerSerializer()
+    order_items = OrderItemSerializer(source='orderitem_set', many=True)
+
+    class Meta:
+        model = Orders
+        fields = ['id', 'customer_id', 'order_items','total_price']
 
