@@ -135,8 +135,3 @@ flowchart TB
 ## 📜 License
 This project is licensed under the **MIT License**.
 
----
-
-## 📩 Contact & Contributions
-- **Author:** Paritosh   
-- **Contributions:** PRs are welcome! Open an issue for suggestions.  
