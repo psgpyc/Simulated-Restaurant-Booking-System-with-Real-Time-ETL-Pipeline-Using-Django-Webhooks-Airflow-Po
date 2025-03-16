@@ -141,4 +141,4 @@ class OrdersCreateApiView(views.APIView):
         ord_obj.calculate_total_price()
 
 
-        return Response({'data':''})
+        return Response({'data':'Your order has been placed successfully!'})

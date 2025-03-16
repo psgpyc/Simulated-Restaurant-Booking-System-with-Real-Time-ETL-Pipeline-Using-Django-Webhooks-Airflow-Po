@@ -4,7 +4,7 @@ import requests
 import json
 from django.db import transaction
 
-from bookings.models import Reservations, WebhookEvent
+from bookings.models import Reservations, WebhookEvent, Orders
 import time
 
 
@@ -82,7 +82,29 @@ def tags_update_signal(sender, instance, action, **kwargs):
         
     
 
+# Order Sending Signal
     
+@receiver(post_save, sender=Orders)
+def send_orders_webhook(sender, instance, created, **kwargs):
+    """
+        Sends a webhook event when a new order is created.
+    """
 
+    order_details = {
+        'order_id': instance.id,
+        'customer_id': instance.customer_id,
+        'order_items': [
+            {
+              obj.menu_item.id:obj.quantity  for obj in instance.orderitem_set.all()
+            }
+        ],
+        'total_price': instance.total_price,
+        'ordered_on': instance.created_at,
+        'updated_on': instance.updated_at,
+        'order_status': instance.is_completed
+    }
+
+    print(order_details)
+    
 
 
