@@ -3,6 +3,8 @@ from django.dispatch import receiver
 import requests
 import json
 from django.db import transaction
+from django.core.serializers.json import DjangoJSONEncoder
+
 
 from bookings.models import Reservations, WebhookEvent, Orders
 import time
@@ -14,7 +16,8 @@ auth = ("admin", "nepal123")
 
 
 def send_webhook(instance, created):
-    data= {
+ 
+    data = {
         "conf": {
         "reservation_id": instance.id,
         "guest": {
@@ -90,21 +93,30 @@ def send_orders_webhook(sender, instance, created, **kwargs):
         Sends a webhook event when a new order is created.
     """
 
+    PIPELINE_URL = "http://localhost:8080/api/v1/dags/order_pipeline_dag/dagRuns"
+
     order_details = {
+        'conf': {
         'order_id': instance.id,
-        'customer_id': instance.customer_id,
+        'customer_id': instance.customer_id.id,
         'order_items': [
             {
               obj.menu_item.id:obj.quantity  for obj in instance.orderitem_set.all()
             }
         ],
-        'total_price': instance.total_price,
-        'ordered_on': instance.created_at,
-        'updated_on': instance.updated_at,
+        'total_price': json.dumps(instance.total_price, cls=DjangoJSONEncoder),
+        'ordered_on': instance.created_at.isoformat(),
+        'updated_on': instance.updated_at.isoformat(),
         'order_status': instance.is_completed
+        }
     }
 
-    print(order_details)
-    
+    # # Send webhook request to the pipeline
+    headers = {"Content-Type": "application/json"}
+    try:
+        response = requests.post(PIPELINE_URL, json=order_details, headers=headers, auth=auth)
+        response.raise_for_status()  # Raise exception if request fails
+    except requests.RequestException as e:
+        print(f"Webhook Error: {e}")  # Log the error    
 
 
