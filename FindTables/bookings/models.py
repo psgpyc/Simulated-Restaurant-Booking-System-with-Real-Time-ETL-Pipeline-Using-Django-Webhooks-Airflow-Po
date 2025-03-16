@@ -118,7 +118,7 @@ class MenuItem(models.Model):
 
 
     def __str__(self):
-        return f"{self.name}-{self.price}"
+        return f"{self.id}/{self.name}-{self.price}"
     
 
     
