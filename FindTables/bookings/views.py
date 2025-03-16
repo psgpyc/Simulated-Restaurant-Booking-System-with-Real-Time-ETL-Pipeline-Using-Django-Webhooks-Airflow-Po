@@ -122,17 +122,36 @@ class OrdersCreateApiView(views.APIView):
             raise Http404
 
     def post(self, request, pk, format=None):
+
+        # validate that is_completed key exists in the request data
+
+        if 'is_completed' not in request.data:
+            return Response({'error': "Miss 'is_completed' in request data"}, status=400)
+
         cus_id = self.get_object(pk=pk)
+
         ord_obj, created = Orders.objects.get_or_create(customer_id=cus_id, is_completed=False)
-        if not created and request.data['is_completed'] == True:
-            # order is updated but has not been completed
-            ord_obj.is_completed = request.data['is_completed']
+        if not created: 
+            if request.data.get('is_completed') is True:
+                # order is updated but has not been completed
+                ord_obj.is_completed = request.data['is_completed']
+                try:
+                    ord_obj.save()
+                except Exception as e:
+                    return Response({'error': f'error updating order {str(e)}'}, status=500)
 
         if not created and request.data['is_completed'] == False:
-            pass
+            print('not created and not finished............')
         
         if created:
+            if "order_items" not in request.data:
+                return Response({'error': 'Missing "order_items" in request data'}, status=400)
+            
             menu_items = request.data.pop("order_items")
+
+            # Ensure "order_items" is a non-empty list.
+            if not isinstance(menu_items, list) or not menu_items:
+                return Response({'error': '"order_items" must be a non-empty list'}, status=400)
                 
             through_obj = [
                 OrderItem(
@@ -145,7 +164,12 @@ class OrdersCreateApiView(views.APIView):
             ]
             OrderItem.objects.bulk_create(through_obj)
 
-            ord_obj.calculate_total_price()
+            try:
+                ord_obj.calculate_total_price()
+            except Exception as e:
+                return Response({'error': f'Error calculating total price: {str(e)}'}, status=500)
+
+
 
 
         return Response({'data':'Your order has been placed'})
