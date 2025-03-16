@@ -124,21 +124,28 @@ class OrdersCreateApiView(views.APIView):
     def post(self, request, pk, format=None):
         cus_id = self.get_object(pk=pk)
         ord_obj, created = Orders.objects.get_or_create(customer_id=cus_id, is_completed=False)
+        if not created and request.data['is_completed'] == True:
+            # order is updated but has not been completed
+            ord_obj.is_completed = request.data['is_completed']
 
-        menu_items = request.data.pop("order_items")
-            
-        through_obj = [
-            OrderItem(
-                order=ord_obj,
-                menu_item=MenuItem.objects.get(id=item['menu_item']),
-                quantity=item['quantity']
-            )
-            for item in menu_items
+        if not created and request.data['is_completed'] == False:
+            pass
+        
+        if created:
+            menu_items = request.data.pop("order_items")
+                
+            through_obj = [
+                OrderItem(
+                    order=ord_obj,
+                    menu_item=MenuItem.objects.get(id=item['menu_item']),
+                    quantity=item['quantity']
+                )
+                for item in menu_items
 
-        ]
-        OrderItem.objects.bulk_create(through_obj)
+            ]
+            OrderItem.objects.bulk_create(through_obj)
 
-        ord_obj.calculate_total_price()
+            ord_obj.calculate_total_price()
 
 
-        return Response({'data':'Your order has been placed successfully!'})
+        return Response({'data':'Your order has been placed'})
