@@ -127,27 +127,19 @@ class OrdersCreateApiView(views.APIView):
 
         if 'is_completed' not in request.data:
             return Response({'error': "Miss 'is_completed' in request data"}, status=400)
+        
+        if "order_items" not in request.data:
+                return Response({'error': 'Missing "order_items" in request data'}, status=400)
+            
 
         cus_id = self.get_object(pk=pk)
 
         ord_obj, created = Orders.objects.get_or_create(customer_id=cus_id, is_completed=False)
-        if not created: 
-            if request.data.get('is_completed') is True:
-                # order is updated but has not been completed
-                ord_obj.is_completed = request.data['is_completed']
-                try:
-                    ord_obj.save()
-                except Exception as e:
-                    return Response({'error': f'error updating order {str(e)}'}, status=500)
 
-        if not created and request.data['is_completed'] == False:
-            print('not created and not finished............')
         
+        menu_items = request.data.pop("order_items")
+
         if created:
-            if "order_items" not in request.data:
-                return Response({'error': 'Missing "order_items" in request data'}, status=400)
-            
-            menu_items = request.data.pop("order_items")
 
             # Ensure "order_items" is a non-empty list.
             if not isinstance(menu_items, list) or not menu_items:
@@ -168,8 +160,44 @@ class OrdersCreateApiView(views.APIView):
                 ord_obj.calculate_total_price()
             except Exception as e:
                 return Response({'error': f'Error calculating total price: {str(e)}'}, status=500)
+            
+            return Response({'data':'Your order has been created'})
 
 
 
+        if not created: 
+            if request.data.get('is_completed') is True:
+                # order is updated but has not been completed
+                ord_obj.is_completed = request.data['is_completed']
+                try:
+                    ord_obj.save()
+                except Exception as e:
+                    return Response({'error': f'error updating order {str(e)}'}, status=500)
+                
+                return Response({'data':'Your order has been completed'})
 
-        return Response({'data':'Your order has been placed'})
+            if request.data['is_completed'] is False:
+                for each_menu_item in menu_items:
+                    try:
+                        menu_item_obj = MenuItem.objects.get(id=each_menu_item['menu_item'])
+                    except Exception as e:
+                        return Response({'error': f'error fetching menu item {str(e)}'})
+                    order_item_obj, created = OrderItem.objects.get_or_create(order=ord_obj, menu_item=menu_item_obj)
+                    if not created:
+                        order_item_obj.quantity += each_menu_item['quantity']
+                        try:
+                            order_item_obj.save()
+                        except Exception as e:
+                            return Response({'error': f'error updating order quantity {str(e)}'})
+                    if created:
+                        order_item_obj.quantity = each_menu_item['quantity']
+                        try:
+                            order_item_obj.save()
+                        except Exception as e:
+                            return Response({'error': f'error updating order quantity {str(e)}'})
+                        
+                ord_obj.calculate_total_price()
+
+       
+
+                return Response({'data':'Your order has been updated'})
