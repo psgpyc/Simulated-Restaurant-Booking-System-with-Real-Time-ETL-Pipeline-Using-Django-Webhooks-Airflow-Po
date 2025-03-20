@@ -55,14 +55,6 @@ flowchart TB
     Begin --> Pipeline --> Analytics
 ```
 
-### Airflow Pipeline
-
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/98eb1307-1f0a-4461-9231-c99e174b46ae" alt="Project Image">
-</div>
-
----
-
 ## Features
 
 **Automated ETL Pipeline** – Extracts, transforms, and loads booking data from multiple platforms.  
