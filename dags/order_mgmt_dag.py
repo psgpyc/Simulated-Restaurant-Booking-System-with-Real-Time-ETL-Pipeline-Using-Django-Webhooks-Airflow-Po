@@ -1,120 +1,107 @@
 import os
-import pendulum
-from helpers.checkers import validate_json
 from datetime import timedelta
+from pendulum import datetime
+from airflow.decorators import dag, task
 from airflow.providers.postgres.hooks.postgres import PostgresHook
-from airflow.decorators import task, dag
+
+
+from helpers.checkers import validate_json_orders
 
 os.environ['NO_PROXY'] = '*'
 
-default_agrs = {
-    "owner": "airflow",
-    "retries": 3,
-    "retry_delay": timedelta(minutes=5),
+
+default_args = {
+    'owner': 'psgpyc',
+    'retries': 3, 
+    'retry_delay': timedelta(minutes=3)
+
 }
 
+
 dag_defination = """ 
-    This DAG extracts data from multiple ordering platforms, transforms it, and loads it to a centralised database. 
+    This DAG extracts order data when the orders have been placed
 """
 
+
 @dag(
-    dag_id='etl_pipeline_dag',  
-    default_args=default_agrs,
-    schedule=None, 
-    start_date= pendulum.datetime(2025, 3, 13, tz="UTC"),
-    tags= ['etl', 'cont'],
-    doc_md=dag_defination,
-    catchup=False
-)
+    dag_id="order_pipeline_dag",
+    default_args=default_args,
+    start_date=datetime(2025, 3, 16),
+    schedule=None,
+    tags= ['etl', 'orders'],
+    catchup=False)
 def etl_process_order_data():
     @task()
     def extract(**kwargs):
-        """Extract data from the webhook payload"""
+        print('From the pipeline')
         dag_run_conf = kwargs["dag_run"].conf
         return dag_run_conf
     
     @task()
     def transform(payload):
-        validated_data = validate_json(payload)
-        if validated_data:
-            customers = validated_data.pop('guest')
-            validated_data['customer_id'] = customers['customer_id']
-            reservation = validated_data
+        validated_data = validate_json_orders(payload)
+        print('from transform ..................')
+        order_items = validated_data.pop('order_items')
 
-            return {'customers_data': customers, 'reservation_data': reservation}
-        
+        for each in order_items:
+            each['order_id'] = validated_data['order_id']
+            each['customer_id'] = validated_data['customer_id']
 
-        
-    @task()
-    def load_customers(transformed_payload):
-        customer = transformed_payload.get('customers_data', {})
-
-        pg_hook = PostgresHook(postgres_conn_id='order_management_conn')
-        sql = """
-            INSERT INTO customers (customer_id, customer_name, customer_email, customer_phone, joined_date)
-            VALUES (%(customer_id)s, %(customer_name)s, %(customer_email)s, %(customer_phone)s, %(joined_date)s)
-            ON CONFLICT (customer_id) DO UPDATE SET 
-                customer_name = EXCLUDED.customer_name,
-                customer_email = EXCLUDED.customer_email,
-                customer_phone = EXCLUDED.customer_phone,
-                joined_date = EXCLUDED.joined_date;
-
-            """
-        pg_hook.run(sql, parameters=customer)
-        return 'Success'
+        return {'order': validated_data, 'orderitems': order_items}
     
-    @task
 
-
-    def load_reservations(transformed_payload):
-        reservation = transformed_payload.get('reservation_data', {}) 
-
+    @task()
+    def load_order(payload):
+        order_data = payload.pop('order')
         pg_hook = PostgresHook(postgres_conn_id='order_management_conn')
+
         sql = """
-            INSERT INTO reservations (
-                reservation_id, customer_id, reservation_time, experience, size, status, payment_mode, visit_notes, created_at, source
-            )
+        INSERT INTO orders (order_id, customer_id, created_on, updated_on, total_price, is_completed) 
+        VALUES (
+            %(order_id)s,
+            %(customer_id)s,
+            %(ordered_on)s,
+            %(updated_on)s,
+            %(total_price)s,
+            %(order_status)s
+        )
+        ON CONFLICT 
+            (order_id) 
+        DO UPDATE
+        SET
+            updated_on=EXCLUDED.updated_on,
+            total_price=EXCLUDED.total_price,
+            is_completed=EXCLUDED.is_completed
+
+        """
+
+        pg_hook.run(sql, parameters=order_data)
+
+    @task()
+    def load_order_items(payload):
+        order_items = payload.pop('orderitems')
+        pg_hook = PostgresHook(postgres_conn_id='order_management_conn')
+        for each_item in order_items:
+            sql = """
+            INSERT INTO orderitems (order_id, customer_id, menu_item, quantity)
             VALUES (
-                %(reservation_id)s,
+                %(order_id)s,
                 %(customer_id)s,
-                %(reservation_time)s,
-                %(experience)s,
-                %(size)s,
-                %(status)s,
-                %(payment_mode)s,
-                %(visit_notes)s,
-                %(created_at)s,
-                %(source)s
+                %(menu_item)s,
+                %(quantity)s
             )
-            ON CONFLICT (reservation_id) DO UPDATE SET 
-                reservation_time = EXCLUDED.reservation_time,
-                experience = EXCLUDED.experience,
-                size = EXCLUDED.size,
-                status = EXCLUDED.status,
-                payment_mode = EXCLUDED.payment_mode,
-                visit_notes = EXCLUDED.visit_notes,
-                created_at = EXCLUDED.created_at,
-                source = EXCLUDED.source;
-             """
+            ON CONFLICT 
+                (order_id, customer_id, menu_item)
+            DO UPDATE
+            SET
+                quantity=orderitems.quantity + EXCLUDED.quantity
+            """
+            pg_hook.run(sql, parameters=each_item)
 
-        pg_hook.run(sql, parameters=reservation)
-        
-
-
-    received_data = extract()
-    transformed_data = transform(payload = received_data)
-    load_customers(transformed_payload=transformed_data)
-    load_reservations(transformed_payload=transformed_data)
+    extracted_data  = extract()
+    transformed_data = transform(extracted_data)
+    load_order(transformed_data)
+    load_order_items(transformed_data)
 
 
 etl_process_order_data()
-
-
-
-
-
-
-    
-
-
-

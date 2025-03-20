@@ -20,3 +20,14 @@ urlpatterns = [
 
     
 ]
+
+
+
+# {
+#   "is_completed": false,
+#   "order_items": [
+#     { "menu_item": 1, "quantity": 1 },
+#     { "menu_item": 2, "quantity": 2 },
+#     { "menu_item": 3, "quantity": 2 }
+#   ]
+# }
