@@ -1,20 +1,20 @@
 # Automated ETL Pipeline for Multi-Platform Restaurant Booking Data Integration and Analytics
 
-This project simulates a multi-platform restaurant reservation system and demonstrates how to build a real-time data pipeline using Apache Airflow, Django Rest Framework (DRF), and PostgreSQL.
+This project simulates a multi-platform restaurant reservation system and demonstrates how to build a real-time data pipeline using Apache Airflow, Django Rest Framework (DRF), and PostgreSQL.  
 
-It showcases:
-	•	A custom frontend built with Django DRF that mimics how users book tables via popular platforms like OpenTable, TheFork, and Quandoo.
-	•	A webhook integration that automatically triggers an Airflow DAG when a new reservation is made.
-	•	A centralised PostgreSQL data warehouse where booking data is structured and stored for further analysis and dashboarding.
+It showcases:  
+	•	A custom frontend built with Django DRF that mimics how users book tables via popular platforms like OpenTable, TheFork, and Quandoo.   
+	•	A webhook integration that automatically triggers an Airflow DAG when a new reservation is made.  
+	•	A centralised PostgreSQL data warehouse where booking data is structured and stored for further analysis and dashboarding.  
 
 ## Project Motivation
 
-Restaurant today relies on several booking platforms such as The Fork, Quandoo, Open Table, and Design My Nights. When a reservation is made through any of these channels, restaurants receive an immediate email notification, and each platform offers a dedicated web interface where current, past, and future bookings can be viewed. This system allows for real-time updates on guest reservations and historical data, which can be essential for managing capacity and planning operations. 
+Restaurant today relies on several booking platforms such as The Fork, Quandoo, Open Table, and Design My Nights. When a reservation is made through any of these channels, restaurants receive an immediate email notification, and each platform offers a dedicated web interface where current, past, and future bookings can be viewed. This system allows for real-time updates on guest reservations and historical data, which can be essential for managing capacity and planning operations.   
 
-In the restaurant industry, booking data is often spread across multiple platforms, making it difficult to consolidate and analyse in real-time. This project solves that by:
-	•	Simulating multi-platform bookings
-	•	Automating the data ingestion and transformation process
-	•	Storing clean, structured data in a centralised warehouse
+In the restaurant industry, booking data is often spread across multiple platforms, making it difficult to consolidate and analyse in real-time. This project solves that by:  
+	•	Simulating multi-platform bookings  
+	•	Automating the data ingestion and transformation process  
+	•	Storing clean, structured data in a centralised warehouse   
 
 This project implements an ETL pipeline orchestrated by Apache Airflow, designed to automate the whole process without human intervention. The pipeline seamlessly integrates reservation data from multiple platforms into a single, centralised warehouse.  </br>
 
@@ -95,15 +95,15 @@ flowchart TB
 
 ---
 
-## Workflow Overview
+## Workflow Overview  
 
-User books a table through a simulated frontend (built using Django DRF).
-	2.	A custom webhook sends booking data to Airflow.
-	3.	An Airflow DAG is triggered, fetching the reservation data.
-	4.	The data is cleaned, transformed, and loaded into a central PostgreSQL warehouse.
-	5.	(Optional) Use Tableau / Power BI to create dashboards on top of the warehouse.
+User books a table through a simulated frontend (built using Django DRF).  
+	2.	A custom webhook sends booking data to Airflow.  
+	3.	An Airflow DAG is triggered, fetching the reservation data.  
+	4.	The data is cleaned, transformed, and loaded into a central PostgreSQL warehouse.  
+	5.	(Optional) Use Tableau / Power BI to create dashboards on top of the warehouse.  
 
 
-## 📜 License
-This project is licensed under the **MIT License**.
+## 📜 License  
+This project is licensed under the **MIT License**.  
 
