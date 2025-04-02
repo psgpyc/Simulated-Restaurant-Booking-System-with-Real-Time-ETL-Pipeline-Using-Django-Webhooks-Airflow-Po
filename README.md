@@ -1,22 +1,20 @@
 # Automated ETL Pipeline for Multi-Platform Restaurant Booking Data Integration and Analytics
 
-## Project Overview
+This project simulates a multi-platform restaurant reservation system and demonstrates how to build a real-time data pipeline using Apache Airflow, Django Rest Framework (DRF), and PostgreSQL.
+
+It showcases:
+	•	A custom frontend built with Django DRF that mimics how users book tables via popular platforms like OpenTable, TheFork, and Quandoo.
+	•	A webhook integration that automatically triggers an Airflow DAG when a new reservation is made.
+	•	A centralised PostgreSQL data warehouse where booking data is structured and stored for further analysis and dashboarding.
+
+## Project Motivation
 
 Restaurant today relies on several booking platforms such as The Fork, Quandoo, Open Table, and Design My Nights. When a reservation is made through any of these channels, restaurants receive an immediate email notification, and each platform offers a dedicated web interface where current, past, and future bookings can be viewed. This system allows for real-time updates on guest reservations and historical data, which can be essential for managing capacity and planning operations. 
 
-While these platforms are primarily booking tools—not full management systems—restaurants migrate the booking data into a centralized management system for operational efficiency. 
-
-How do the restaurant do that? 
-
-A common guess will be through APIs!
-
-These booking platforms do offer APIs that can theoretically integrate with popular restaurant management systems.
-
-Many restaurants(small and medium-sized) opt to manually migrate the incoming reservation data into their internal management system.
-
-It is not ideal-- but hey, it works!
-
-But we all know, human error and lack of a automated, centralised system severely hampers analytics capabilities, and strategic decision-making. 
+In the restaurant industry, booking data is often spread across multiple platforms, making it difficult to consolidate and analyse in real-time. This project solves that by:
+	•	Simulating multi-platform bookings
+	•	Automating the data ingestion and transformation process
+	•	Storing clean, structured data in a centralised warehouse
 
 This project implements an ETL pipeline orchestrated by Apache Airflow, designed to automate the whole process without human intervention. The pipeline seamlessly integrates reservation data from multiple platforms into a single, centralised warehouse.  </br>
 
@@ -24,7 +22,8 @@ Since,these booking platform do not provide API endpoints unless you are their c
 
 Additionally, the project features an interactive Tableau dashboard providing real-time analytics, offering clear insights into booking trends, reservation patterns, and platform performance metrics to support informed business decisions.
 
-Additionally, this project includes **FindTables**, a basic **Django-based restaurant booking system** that simulates real-world table reservations. Users can make and manage reservations through API endpoints and a **frontend**.
+Additionally, this project includes **FindTables**, a basic **Django-based restaurant booking system** that simulates real-world table reservations.
+
 ```mermaid
 flowchart TB
 
@@ -89,40 +88,21 @@ flowchart TB
 | **Orchestration**  | Apache Airflow  |
 | **Backend**        | Django & DRF |
 | **Database**       | PostgreSQL|
-| **Data Processing** | Pydantic, Pandas, Python |
+| **Data Validation & Processing** | Pydantic, Pandas, Python |
 | **Visualization**  | Tableau |
 | **Frontend**       | jQuery, HTML, CSS |
 | **Deployment**     | Docker, AWS |
 
 ---
 
-## How It Works
+## Workflow Overview
 
-### Extract Booking Data
-- Airflow DAGs receives **reservation data** from custom built webhooks in Django.
-- Data is fetched in different formats (JSON, CSV) and standardized.
+User books a table through a simulated frontend (built using Django DRF).
+	2.	A custom webhook sends booking data to Airflow.
+	3.	An Airflow DAG is triggered, fetching the reservation data.
+	4.	The data is cleaned, transformed, and loaded into a central PostgreSQL warehouse.
+	5.	(Optional) Use Tableau / Power BI to create dashboards on top of the warehouse.
 
-### Transform & Standardize
-- Python scripts clean, validate, and standardize booking data.
-- Ensures uniformity across seperate databases. 
-
-### Load into Database
-- Standardized data is stored in **PostgreSQL**.
-- Enables **efficient querying** and integration with the dashboard.
-
-### Dashboard Analysis
-- Tableau visualizes:
-  - **Booking trends** across platforms
-  - **Occupancy rates** per restaurant
-  - **Platform performance** comparisons
-
-### FindTables - Django-Based Booking System
-- Allows users to **simulate restaurant bookings** via API.
-- Stores bookings in the central database.
-
-### Webhook Simulation
-- Simulates real-time booking updates from different platforms.
-- Updates database whenever a **reservation is modified or canceled**.
 
 ## 📜 License
 This project is licensed under the **MIT License**.
