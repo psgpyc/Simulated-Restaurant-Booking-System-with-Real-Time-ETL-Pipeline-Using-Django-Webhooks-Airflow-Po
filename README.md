@@ -1,4 +1,4 @@
-# Automated ETL Pipeline for Multi-Platform Restaurant Booking Data Integration and Analytics
+# Restaurant Booking System with Real Time ETL Pipeline Using Django-Webhooks, Airflow and PostgreSQL
 
 This project simulates a multi-platform restaurant reservation system and demonstrates how to build a real-time data pipeline using Apache Airflow, Django Rest Framework (DRF), and PostgreSQL.  
 
